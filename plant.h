@@ -3,7 +3,7 @@
 
 class Plant : public Organism {
 public:
-    Plant(std::string name, int strength, int initiative, int x, int y);
+    Plant(std::string name, int strength, int initiative, int x, int y, std::vector<Organism*> otherOrganisms);
     virtual ~Plant();
 
     Organism* clone() override;

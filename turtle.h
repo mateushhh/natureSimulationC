@@ -1,10 +1,10 @@
 #pragma once
 #include "animal.h"
 
-class Wolf : public Animal {
+class Turtle : public Animal {
 public:
-    Wolf(int x, int y, std::vector<Organism*> otherOrganisms);
-    ~Wolf();
+    Turtle(int x, int y, std::vector<Organism*> otherOrganisms);
+    ~Turtle();
 
     Organism* clone() override;
     void draw() override;

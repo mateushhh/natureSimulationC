@@ -1,7 +1,7 @@
 #include "grass.h"
 
-Grass::Grass(int x, int y)
-    : Plant("Grass", 0, 0, x, y) {}
+Grass::Grass(int x, int y, std::vector<Organism*> otherOrganisms)
+    : Plant("Grass", 0, 0, x, y, otherOrganisms) {}
 
 Grass::~Grass() {}
 

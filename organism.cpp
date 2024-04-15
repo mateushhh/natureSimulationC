@@ -1,8 +1,10 @@
 #include "organism.h"
 
 //Constructors & Destructors
-Organism::Organism(std::string name, int strength, int initiative, int x, int y)
-    : name(name), strength(strength), initiative(initiative), x(x), y(y), age(0) {}
+Organism::Organism(std::string name, int strength, int initiative, int x, int y, std::vector<Organism*> otherOrganisms)
+    : name(name), strength(strength), initiative(initiative), x(x), y(y), age(0), life(true), otherOrganisms(otherOrganisms) {
+    std::cout << name << " is born.\n";
+}
 
 Organism::~Organism() {
     std::cout << name << " has died.\n";
@@ -43,6 +45,14 @@ int Organism::getInitiative() {
 
 std::string Organism::getName() {
     return this->name;
+}
+
+bool Organism::alive() {
+    return this->life;
+}
+
+void Organism::die() {
+    this->life = false;
 }
 
 //Drawing organism in the grid

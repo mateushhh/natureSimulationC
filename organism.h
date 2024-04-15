@@ -1,7 +1,10 @@
 #pragma once
 #include <string>
+#include <vector>
 #include <iostream>
 #include "conio2.h"
+class World;
+
 #define UP 1
 #define LEFT 2
 #define DOWN 3
@@ -18,10 +21,12 @@ protected:
     int x;
     int y;
     int age;
+    bool life;
     std::string name;
+    std::vector<Organism*> otherOrganisms;
 
 public:
-    Organism(std::string name, int strength, int initiative, int x, int y);
+    Organism(std::string name, int strength, int initiative, int x, int y, std::vector<Organism*> otherOrganisms);
     virtual ~Organism();
 
     void setX(int x);
@@ -34,6 +39,8 @@ public:
     int getInitiative();
     std::string getName();
 
+    bool alive();
+    void die();
     virtual Organism* clone() = 0;
     virtual void draw();
     virtual void action(int width, int height) = 0;

@@ -24,7 +24,14 @@ Organism* World::getOrganism(int i) {
 }
 
 void World::sortOrganisms() {
-    std::sort(organisms.begin(), organisms.end(), compareInitiative);
+    std::sort(organisms.begin(), organisms.end(), [](Organism* a, Organism* b) {
+        if (a->getInitiative() != b->getInitiative()) {
+            return a->getInitiative() > b->getInitiative(); 
+        }
+        else {
+            return a->getAge() > b->getAge();
+        }
+        });
 }
 
 void World::drawWorld() {
@@ -62,7 +69,8 @@ void World::drawWorld() {
 
     gotoxy(1, height + 3);
     std::cout << "WASD - Walking\n";
-    std::cout << "SPACE - Next turn\n\n";
+    std::cout << "SPACE - Next turn\n";
+    std::cout << "Q - Quit\n\n";
     std::cout << "Turn: " << turn << "\n";
     std::cout << "Activity Log:\n";
 }
@@ -71,17 +79,27 @@ void World::executeTurn() {
     sortOrganisms();
     int result ,preX, preY;
     int numberOfAnimals = (int)organisms.size();
+
+    //Each organism makes their move
     for (int i = 0; i < numberOfAnimals; i++) {
+        if (!organisms[i]->alive())
+            break;
         preX = organisms[i]->getX();
         preY = organisms[i]->getY();
         organisms[i]->action(width, height);
+
+        //Checking for collision
         for (int j = 0; j < numberOfAnimals; j++) {
             if (i != j && organisms[i]->getX() == organisms[j]->getX() && organisms[i]->getY() == organisms[j]->getY()) {
+                
                 result = organisms[i]->collision(organisms[j]);
-                if (result == KILL);
-                    //removeOrganism(j);
-                else if (result == DIES)
-                    removeOrganism(i);
+                if (result == KILL) {
+                    if(organisms[j]->collision(organisms[i]) == DIES)
+                        organisms[j]->die();
+                }
+                else if (result == DIES) {
+                    organisms[i]->die();
+                }
                 else if (result == BREED) {
                     organisms[i]->setX(preX);
                     organisms[i]->setY(preY);
@@ -93,9 +111,19 @@ void World::executeTurn() {
                     addOrganism(newOrganism);
                     break;
                 }
+                else if (result == NOTHING) {
+                    organisms[i]->setX(preX);
+                    organisms[i]->setY(preY);
+                }
             }
         }
     }
+
+    //Removing dead organisms from vector
+    for (int i = 0; i < organisms.size(); i++)
+        if (!organisms[i]->alive())
+            removeOrganism(i);
+
     sortOrganisms();
     turn++;
 }

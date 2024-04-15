@@ -5,14 +5,17 @@
 #include "conio2.h"
 #include "organism.h"
 
+class Organism;
+
 class World {
 private:
     int width;
     int height;
     int turn = 1;
-    std::vector<Organism*> organisms; 
 
 public:
+    std::vector<Organism*> organisms;
+
     World(int width, int height);
     ~World();
 

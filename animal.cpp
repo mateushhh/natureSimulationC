@@ -1,59 +1,48 @@
 #include "animal.h"
 
-Animal::Animal(std::string name, int strength, int initiative, int x, int y)
-    : Organism(name, strength, initiative, x, y) {}
+Animal::Animal(std::string name, int strength, int initiative, int x, int y, std::vector<Organism*> otherOrganisms)
+    : Organism(name, strength, initiative, x, y, otherOrganisms) {}
 
 Animal::~Animal() {}
 
 Organism* Animal::clone() {
+    std::cout << this->name << " is born.\n";
     return new Animal(*this);
 }
 
 void Animal::draw() {
-    textcolor(RED);
     Organism::draw();
 }
 
 void Animal::action(int width, int height) {
-    int direction;
-    this->setAge(getAge() + 1);
-    while (1) {
-        direction = (rand() % 4) + 1;
-        switch (direction) {
-        case UP:
-            if (this->getY() != 1){
-                this->setY(getY() - 1);
-                //std::cout << name << " moves to (" << getX() << ", " << getY() << ").\n";
-                std::cout << *this;
-                return;
-            }
-            break;
-        case LEFT:
-            if (this->getX() != 1) {
-                this->setX(getX() - 1);
-                //std::cout << name << " moves to (" << getX() << ", " << getY() << ").\n";
-                std::cout << *this;
-                return;
-            }
-            break;
-        case DOWN:
-            if (this->getY() != height) {
-                this->setY(getY() + 1);
-                //std::cout << name << " moves to (" << getX() << ", " << getY() << ").\n";
-                std::cout << *this;
-                return;
-            }
-            break;
-        case RIGHT:
-            if (this->getX() != width) {
-                this->setX(getX() + 1);
-                //std::cout << name << " moves to (" << getX() << ", " << getY() << ").\n";
-                std::cout << *this;
-                return;
-            }
-            break;
-        }
+    int direction = (rand() % 4) + 1;
+    int preX = getX();
+    int preY = getY();
+
+    switch (direction) {
+    case UP:
+        if (this->getY() != 1)
+            setY(getY() - 1);
+        break;
+    case LEFT:
+        if (this->getX() != 1)
+            setX(getX() - 1);
+        break;
+    case DOWN:
+        if (this->getY() != height)
+            setY(getY() + 1);
+        break;
+    case RIGHT:
+        if (this->getX() != width)
+            setX(getX() + 1);
+        break;
     }
+
+    if (preX == getX() && preY == getY())
+        return action(width,height);
+
+    this->setAge(getAge() + 1);
+    std::cout << *this;
 }
 
 int Animal::collision(Organism* organism) {
