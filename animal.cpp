@@ -16,34 +16,39 @@ void Animal::draw() {
 
 void Animal::action(int width, int height) {
     int direction;
+    this->setAge(getAge() + 1);
     while (1) {
         direction = (rand() % 4) + 1;
         switch (direction) {
         case UP:
-            if (this->getY() != 1) {
+            if (this->getY() != 1){
                 this->setY(getY() - 1);
-                std::cout << name << " moves to (" << getX() << ", " << getY() << ").\n";
+                //std::cout << name << " moves to (" << getX() << ", " << getY() << ").\n";
+                std::cout << *this;
                 return;
             }
             break;
         case LEFT:
             if (this->getX() != 1) {
                 this->setX(getX() - 1);
-                std::cout << name << " moves to (" << getX() << ", " << getY() << ").\n";
+                //std::cout << name << " moves to (" << getX() << ", " << getY() << ").\n";
+                std::cout << *this;
                 return;
             }
             break;
         case DOWN:
             if (this->getY() != height) {
                 this->setY(getY() + 1);
-                std::cout << name << " moves to (" << getX() << ", " << getY() << ").\n";
+                //std::cout << name << " moves to (" << getX() << ", " << getY() << ").\n";
+                std::cout << *this;
                 return;
             }
             break;
         case RIGHT:
             if (this->getX() != width) {
                 this->setX(getX() + 1);
-                std::cout << name << " moves to (" << getX() << ", " << getY() << ").\n";
+                //std::cout << name << " moves to (" << getX() << ", " << getY() << ").\n";
+                std::cout << *this;
                 return;
             }
             break;

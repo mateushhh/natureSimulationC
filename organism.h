@@ -17,6 +17,7 @@ protected:
     int initiative;
     int x;
     int y;
+    int age;
     std::string name;
 
 public:
@@ -25,8 +26,10 @@ public:
 
     void setX(int x);
     void setY(int y);
+    void setAge(int age);
     int getX();
     int getY();
+    int getAge();
     int getStrength();
     int getInitiative();
     std::string getName();

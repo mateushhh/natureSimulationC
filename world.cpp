@@ -69,12 +69,13 @@ void World::drawWorld() {
 
 void World::executeTurn() {
     sortOrganisms();
-    int result, temp;
-    temp = (int)organisms.size();
-    for (int i = 0; i < temp; i++) {
+    int result ,preX, preY;
+    int numberOfAnimals = (int)organisms.size();
+    for (int i = 0; i < numberOfAnimals; i++) {
+        preX = organisms[i]->getX();
+        preY = organisms[i]->getY();
         organisms[i]->action(width, height);
-        temp = (int)organisms.size();
-        for (int j = 0; j < temp; j++) {
+        for (int j = 0; j < numberOfAnimals; j++) {
             if (i != j && organisms[i]->getX() == organisms[j]->getX() && organisms[i]->getY() == organisms[j]->getY()) {
                 result = organisms[i]->collision(organisms[j]);
                 if (result == KILL);
@@ -82,20 +83,15 @@ void World::executeTurn() {
                 else if (result == DIES)
                     removeOrganism(i);
                 else if (result == BREED) {
-                    /*Organism* newOrganism = organisms[i]->clone();
-                    
-                    if (newOrganism->getY() > 2) {
-                        //for (int o = 0; o < temp; o++) {
-                        //    if (i != j && organisms[o]->getX() == organisms[j]->getX() && organisms[i]->getY() == organisms[j]->getY()) {
-                        //}
-                        newOrganism->setY(newOrganism->getY() - 2);
-                    }
-                    else {
-                        newOrganism->setY(newOrganism->getY() + 2);
-                    }
+                    organisms[i]->setX(preX);
+                    organisms[i]->setY(preY);
+                    if (organisms[i]->getAge() < 10 || organisms[j]->getAge() < 10)
+                        break;
+                    Organism* newOrganism = organisms[i]->clone();
+                    newOrganism->setAge(0);
+                    newOrganism->action(width, height);
                     addOrganism(newOrganism);
                     break;
-                    */
                 }
             }
         }
