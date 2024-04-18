@@ -2,13 +2,9 @@
 
 //Constructors & Destructors
 Organism::Organism(std::string name, int strength, int initiative, int x, int y, std::vector<Organism*> otherOrganisms)
-    : name(name), strength(strength), initiative(initiative), x(x), y(y), age(0), life(true), otherOrganisms(otherOrganisms) {
-    std::cout << name << " is born.\n";
-}
+    : name(name), strength(strength), initiative(initiative), x(x), y(y), age(0), life(true), otherOrganisms(otherOrganisms) {}
 
-Organism::~Organism() {
-    std::cout << name << " has died.\n";
-}
+Organism::~Organism() {}
 
 //Setters & Getters
 void Organism::setX(int x) {
@@ -21,6 +17,10 @@ void Organism::setY(int y) {
 
 void Organism::setAge(int age) {
     this->age = age;
+}
+
+void Organism::setStrength(int strength) {
+    this->strength = strength;
 }
 
 int Organism::getX() {
@@ -55,6 +55,14 @@ void Organism::die() {
     this->life = false;
 }
 
+bool Organism::isAnimal() const { 
+    return false; 
+}
+
+bool Organism::isPlant() const { 
+    return false; 
+}
+
 //Drawing organism in the grid
 void Organism::draw() {
     gotoxy(2 + 4 * x, y + 1);
@@ -64,7 +72,7 @@ void Organism::draw() {
 }
 
 std::ostream& operator<<(std::ostream& os, const Organism& organism) {
-    os << organism.name << " [" << organism.age << "] " << "(" << organism.x << ", " << organism.y << ")\n";
+    os << organism.name << " [" << organism.age << "] " << "(" << organism.x << ", " << organism.y << ")";
     return os;
 }
 

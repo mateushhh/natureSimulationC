@@ -5,24 +5,62 @@ Plant::Plant(std::string name, int strength, int initiative, int x, int y, std::
 
 Plant::~Plant() {}
 
+bool Plant::isPlant() const {
+    return true;
+};
+
 Organism* Plant::clone() {
     return new Plant(*this);
 }
 
 void Plant::draw() {
-    textcolor(LIGHTGREEN);
+    textcolor(BLACK);
+    textbackground(LIGHTGREEN);
     Organism::draw();
-    //textbackground(LIGHTGREEN);
-    //gotoxy(1 + 4 * x, y + 1);
-    //std::cout << ' ' << name[0] << ' ';
-    //textcolor(WHITE);
-    //textbackground(BLACK);
 }
 
-void Plant::action(int width, int height) {
-    
+int Plant::action(int width, int height) {
+    //std::cout << *this;
+    if (this->getAge()==0) { 
+        int direction = (rand() % 4) + 1;
+
+        switch (direction) {
+        case UP:
+            if (this->getY() != 1)
+                setY(getY() - 1);
+            break;
+        case LEFT:
+            if (this->getX() != 1)
+                setX(getX() - 1);
+            break;
+        case DOWN:
+            if (this->getY() != height)
+                setY(getY() + 1);
+            break;
+        case RIGHT:
+            if (this->getX() != width)
+                setX(getX() + 1);
+            break;
+        }
+    }
+    else {
+        //2% chance of plant spreading to another grid block
+        if (!(rand() % 50)) {
+            this->setAge(getAge() + 1);
+            return BREED;
+        }
+    }
+
+    this->setAge(getAge() + 1);
+    return NOTHING;
 }
 
 int Plant::collision(Organism* organism) {
-    return NOTHING;
+    if (this->getStrength() >= organism->getStrength()) {
+        return KILL;
+    }
+    else if (this->getStrength() < organism->getStrength()) {
+        return DIES;
+    }
+    return 0;
 }

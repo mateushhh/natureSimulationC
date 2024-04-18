@@ -1,10 +1,10 @@
 #pragma once
 #include "plant.h"
 
-class Grass : public Plant {
+class Borscht : public Plant {
 public:
-    Grass(int x, int y, std::vector<Organism*> otherOrganisms);
-    ~Grass();
+    Borscht(int x, int y, std::vector<Organism*> otherOrganisms);
+    ~Borscht();
 
     Organism* clone() override;
     void draw() override;

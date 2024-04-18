@@ -8,6 +8,6 @@ public:
 
     Organism* clone() override;
     void draw() override;
-    virtual void action(int width, int height) override;
+    virtual int action(int width, int height) override;
     virtual int collision(Organism* organism) override;
 };

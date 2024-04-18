@@ -15,7 +15,7 @@ void Turtle::draw() {
     Organism::draw();
 }
 
-void Turtle::action(int width, int height) {
+int Turtle::action(int width, int height) {
     int direction;
     int preX = getX();
     int preY = getY();
@@ -49,7 +49,8 @@ void Turtle::action(int width, int height) {
     }
 
     this->setAge(getAge() + 1);
-    std::cout << *this;
+    //std::cout << *this;
+    return NOTHING;
 }
 
 int Turtle::collision(Organism* organism) {

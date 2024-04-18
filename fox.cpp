@@ -15,7 +15,7 @@ void Fox::draw() {
     Organism::draw();
 }
 
-void Fox::action(int width, int height) {
+int Fox::action(int width, int height) {
     int direction = (rand() % 4) + 1;
     int preX = getX();
     int preY = getY();
@@ -55,7 +55,8 @@ void Fox::action(int width, int height) {
     }
 
     this->setAge(getAge() + 1);
-    std::cout << *this;
+    //std::cout << *this;
+    return NOTHING;
 }
 
 int Fox::collision(Organism* organism) {

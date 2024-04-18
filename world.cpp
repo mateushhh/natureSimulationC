@@ -1,5 +1,17 @@
 #include "world.h"
 
+//returns 0 if free, -1 if out of bounds
+int isTaken(std::vector<Organism*> organisms, int numberOfOrganisms, int x, int y, int width, int height) {
+    if (x > width || y > width || x < 1 || y < 1)
+        return -1;
+    int counter = 0;
+    for (int i = 0; i < numberOfOrganisms; i++) {
+        if (x == organisms[i]->getX() && y == organisms[i]->getY())
+            counter += 1;
+    }
+    return counter;
+};
+
 World::World(int width, int height) : width(width), height(height) {}
 
 World::~World() {
@@ -35,8 +47,8 @@ void World::sortOrganisms() {
 }
 
 void World::drawWorld() {
-    system("cls"); 
-
+    clrscr();
+    gotoxy(1, 1);
     std::cout << "Y\\X|";
     for (int x = 1; x <= width; x++) {
         if (x < 10) {
@@ -68,47 +80,106 @@ void World::drawWorld() {
     }
 
     gotoxy(1, height + 3);
-    std::cout << "WASD - Walking\n";
+    std::cout << "Mateusz Grzonka s198023\n";
+    std::cout << "WASD  - Walking\n";
+    std::cout << "E     - Special (Alzur's Shield)\n";
     std::cout << "SPACE - Next turn\n";
-    std::cout << "Q - Quit\n\n";
+    std::cout << "Q     - Quit\n\n";
     std::cout << "Turn: " << turn << "\n";
     std::cout << "Activity Log:\n";
+    std::cout << activitylog;
 }
 
 void World::executeTurn() {
+    activitylog = "";
     sortOrganisms();
     int result ,preX, preY;
-    int numberOfAnimals = (int)organisms.size();
+    int numberOfOrganisms = (int)organisms.size();
 
     //Each organism makes their move
-    for (int i = 0; i < numberOfAnimals; i++) {
+    for (int i = 0; i < numberOfOrganisms; i++) {
+        this->drawWorld();
         if (!organisms[i]->alive())
             break;
         preX = organisms[i]->getX();
         preY = organisms[i]->getY();
-        organisms[i]->action(width, height);
+        result = organisms[i]->action(width, height);
+        if (result == BREED) {
+            //if an organism exists in the new spot dont make it
+            Organism* newOrganism = organisms[i]->clone();
+            newOrganism->setAge(0);
+            newOrganism->action(width, height);
+            for (int j = 0; j < numberOfOrganisms; j++) {
+                if (newOrganism->getX() == organisms[j]->getX() && newOrganism->getY() == organisms[j]->getY()) {
+                    delete newOrganism;
+                    newOrganism = nullptr;
+                    break;
+                }
+            }
+            if(newOrganism!=nullptr)
+                addOrganism(newOrganism);
+        }
 
         //Checking for collision
-        for (int j = 0; j < numberOfAnimals; j++) {
+        for (int j = 0; j < numberOfOrganisms; j++) {
             if (i != j && organisms[i]->getX() == organisms[j]->getX() && organisms[i]->getY() == organisms[j]->getY()) {
-                
                 result = organisms[i]->collision(organisms[j]);
                 if (result == KILL) {
-                    if(organisms[j]->collision(organisms[i]) == DIES)
+                    result = organisms[j]->collision(organisms[i]);
+                    if (result == DIES) {
                         organisms[j]->die();
+                        //std::cout << *organisms[i] << " killed " << *organisms[j] << "\n";
+                        activitylog = activitylog + organisms[i]->getName() + " killed " + organisms[j]->getName() + "\n";
+                    }
+                    else if (result == DODGE) {
+                        organisms[j]->action(width, height);
+                        //std::cout << *organisms[j] << " dodged attack from " << *organisms[i] << "\n";
+                        activitylog = activitylog + organisms[j]->getName() + " dodged attack from " + organisms[i]->getName() + "\n";
+                    }
                 }
                 else if (result == DIES) {
                     organisms[i]->die();
+                    //std::cout << *organisms[j] << " killed " << *organisms[i] << "\n";
+                    activitylog = activitylog + organisms[j]->getName() + " killed " + organisms[i]->getName() + "\n";
                 }
                 else if (result == BREED) {
                     organisms[i]->setX(preX);
                     organisms[i]->setY(preY);
                     if (organisms[i]->getAge() < 10 || organisms[j]->getAge() < 10)
                         break;
-                    Organism* newOrganism = organisms[i]->clone();
-                    newOrganism->setAge(0);
-                    newOrganism->action(width, height);
-                    addOrganism(newOrganism);
+                    if (!isTaken(organisms, numberOfOrganisms, organisms[i]->getX(), organisms[i]->getY() - 1, width, height)) {
+                        Organism* newOrganism = organisms[i]->clone();
+                        newOrganism->setAge(0);
+                        newOrganism->setY(organisms[i]->getY() - 1);
+                        addOrganism(newOrganism);
+                        //std::cout << *newOrganism << " is born\n";
+                        activitylog = activitylog + newOrganism->getName() + " is born \n";
+                        break;
+                    }
+                    else if (!isTaken(organisms, numberOfOrganisms, organisms[i]->getX(), organisms[i]->getY() + 1, width, height)) {
+                        Organism* newOrganism = organisms[i]->clone();
+                        newOrganism->setAge(0);
+                        newOrganism->setY(organisms[i]->getY() + 1);
+                        addOrganism(newOrganism);
+                        activitylog = activitylog + newOrganism->getName() + " is born \n";
+                        break;
+                    }
+                    else if (!isTaken(organisms, numberOfOrganisms, organisms[i]->getX() - 1, organisms[i]->getY(), width, height)) {
+                        Organism* newOrganism = organisms[i]->clone();
+                        newOrganism->setAge(0);
+                        newOrganism->setX(organisms[i]->getX() - 1);
+                        addOrganism(newOrganism);
+                        activitylog = activitylog + newOrganism->getName() + " is born \n";
+                        break;
+                    }
+                    else if (!isTaken(organisms, numberOfOrganisms, organisms[i]->getX() + 1, organisms[i]->getY(), width, height)) {
+                        Organism* newOrganism = organisms[i]->clone();
+                        newOrganism->setAge(0);
+                        newOrganism->setX(organisms[i]->getX() + 1);
+                        addOrganism(newOrganism);
+                        activitylog = activitylog + newOrganism->getName() + " is born \n";
+                        break;
+                    }
                     break;
                 }
                 else if (result == NOTHING) {
@@ -120,10 +191,12 @@ void World::executeTurn() {
     }
 
     //Removing dead organisms from vector
-    for (int i = 0; i < organisms.size(); i++)
+    for (int i = 0; i < (int)organisms.size(); i++)
         if (!organisms[i]->alive())
             removeOrganism(i);
 
     sortOrganisms();
     turn++;
 }
+
+//void World::saveFile();

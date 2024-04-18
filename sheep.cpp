@@ -15,8 +15,8 @@ void Sheep::draw() {
     Organism::draw();
 }
 
-void Sheep::action(int width, int height) {
-    Animal::action(width, height);
+int Sheep::action(int width, int height) {
+    return Animal::action(width, height);
 }
 
 int Sheep::collision(Organism* organism) {

@@ -1,11 +1,11 @@
 #pragma once
 #include "plant.h"
 
-class Grass : public Plant {
+class Dandelion : public Plant {
 public:
-    Grass(int x, int y, std::vector<Organism*> otherOrganisms);
-    ~Grass();
-
+    Dandelion(int x, int y, std::vector<Organism*> otherOrganisms);
+    ~Dandelion();
+    
     Organism* clone() override;
     void draw() override;
     int action(int width, int height) override;

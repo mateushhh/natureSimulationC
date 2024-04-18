@@ -11,7 +11,8 @@ class World {
 private:
     int width;
     int height;
-    int turn = 1;
+    int turn = 0;
+    std::string activitylog;
 
 public:
     std::vector<Organism*> organisms;
@@ -25,4 +26,5 @@ public:
     void sortOrganisms();
     void drawWorld();
     void executeTurn();
+    void saveFile();
 };

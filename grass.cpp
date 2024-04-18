@@ -5,8 +5,20 @@ Grass::Grass(int x, int y, std::vector<Organism*> otherOrganisms)
 
 Grass::~Grass() {}
 
-void Grass::action(int width, int height) {}
+Organism* Grass::clone() {
+    return new Grass(*this);
+}
+
+void Grass::draw() {
+    textcolor(BLACK);
+    textbackground(LIGHTGREEN);
+    Organism::draw();
+}
+
+int Grass::action(int width, int height) {
+    return Plant::action(width, height);
+}
 
 int Grass::collision(Organism* organism) {
-    return NOTHING;
+    return Plant::collision(organism);
 }

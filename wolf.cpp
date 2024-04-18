@@ -15,8 +15,8 @@ void Wolf::draw() {
     Organism::draw();
 }
 
-void Wolf::action(int width, int height) {
-    Animal::action(width, height);
+int Wolf::action(int width, int height) {
+    return Animal::action(width, height);
 }
 
 int Wolf::collision(Organism* organism) {

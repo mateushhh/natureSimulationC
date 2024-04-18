@@ -9,6 +9,7 @@ class World;
 #define LEFT 2
 #define DOWN 3
 #define RIGHT 4
+#define DODGE 4
 #define BREED 3
 #define KILL 2
 #define DIES 1
@@ -32,18 +33,21 @@ public:
     void setX(int x);
     void setY(int y);
     void setAge(int age);
+    void setStrength(int strength);
     int getX();
     int getY();
     int getAge();
     int getStrength();
     int getInitiative();
     std::string getName();
+    virtual bool isAnimal() const;
+    virtual bool isPlant() const;
 
     bool alive();
     void die();
     virtual Organism* clone() = 0;
     virtual void draw();
-    virtual void action(int width, int height) = 0;
+    virtual int action(int width, int height) = 0;
     virtual int collision(Organism* organism) = 0;
 
     friend std::ostream& operator<<(std::ostream& os, const Organism& organism);

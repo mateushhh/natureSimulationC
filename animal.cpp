@@ -1,9 +1,17 @@
 #include "animal.h"
 
 Animal::Animal(std::string name, int strength, int initiative, int x, int y, std::vector<Organism*> otherOrganisms)
-    : Organism(name, strength, initiative, x, y, otherOrganisms) {}
+    : Organism(name, strength, initiative, x, y, otherOrganisms) {
+    //std::cout << this->name << " is born.\n";
+}
 
-Animal::~Animal() {}
+Animal::~Animal() {
+    //std::cout << this->name << " has died.\n";
+}
+
+bool Animal::isAnimal() const {
+    return true;
+};
 
 Organism* Animal::clone() {
     std::cout << this->name << " is born.\n";
@@ -14,7 +22,7 @@ void Animal::draw() {
     Organism::draw();
 }
 
-void Animal::action(int width, int height) {
+int Animal::action(int width, int height) {
     int direction = (rand() % 4) + 1;
     int preX = getX();
     int preY = getY();
@@ -42,11 +50,12 @@ void Animal::action(int width, int height) {
         return action(width,height);
 
     this->setAge(getAge() + 1);
-    std::cout << *this;
+    //std::cout << *this;
+    return NOTHING;
 }
 
 int Animal::collision(Organism* organism) {
-    if (this->name[0] == organism->getName()[0]) {
+    if (this->name == organism->getName()) {
         return BREED;
     }
     else if (this->getStrength() >= organism->getStrength()) {
