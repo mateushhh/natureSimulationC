@@ -16,8 +16,39 @@
 
 int main() {
     settitle("Mateusz Grzonka s198023");
-
+    bool menu = true;
     World* world = new World(20, 20);
+
+    while (menu) {
+        system("cls");
+        gotoxy(1, 1);
+        std::cout << "NATURE SIMULATION\n";
+        std::cout << "Mateusz Grzonka s198023\n";
+        std::cout << "1. New Game\n";
+        std::cout << "2. Load Game\n";
+        std::cout << "3. Quit\n";
+
+        char input = getch();
+        switch (input) {
+        case '1':
+            int width, height;
+            clrscr();
+            gotoxy(1, 1);
+            std::cout << "Width: ";
+            std::cin >> width;
+            std::cout << "Height: ";
+            std::cin >> height;
+            delete world;
+            world = new World(width, height);
+            menu = false;
+            break;
+        case '2':
+            //load game
+            break;
+        case '3':
+            return 0;
+        }
+    }
     char currentMode = ' ';
 
     // Creating organisms and adding them to the world
@@ -62,6 +93,9 @@ int main() {
         case ' ' :
             world->drawWorld();
             world->executeTurn();
+            break;
+        case 'P' :
+            world->saveFile();
             break;
         }
         currentMode = std::toupper(getch());

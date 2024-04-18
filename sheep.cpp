@@ -6,7 +6,7 @@ Sheep::Sheep(int x, int y, std::vector<Organism*> otherOrganisms)
 Sheep::~Sheep() {}
 
 Organism* Sheep::clone() {
-    std::cout << this->name << " is born.\n";
+    //std::cout << this->name << " is born.\n";
     return new Sheep(*this);
 }
 

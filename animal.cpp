@@ -14,7 +14,7 @@ bool Animal::isAnimal() const {
 };
 
 Organism* Animal::clone() {
-    std::cout << this->name << " is born.\n";
+    //std::cout << this->name << " is born.\n";
     return new Animal(*this);
 }
 

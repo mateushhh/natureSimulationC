@@ -84,6 +84,7 @@ void World::drawWorld() {
     std::cout << "WASD  - Walking\n";
     std::cout << "E     - Special (Alzur's Shield)\n";
     std::cout << "SPACE - Next turn\n";
+    std::cout << "P     - Save game\n";
     std::cout << "Q     - Quit\n\n";
     std::cout << "Turn: " << turn << "\n";
     std::cout << "Activity Log:\n";
@@ -128,18 +129,15 @@ void World::executeTurn() {
                     result = organisms[j]->collision(organisms[i]);
                     if (result == DIES) {
                         organisms[j]->die();
-                        //std::cout << *organisms[i] << " killed " << *organisms[j] << "\n";
                         activitylog = activitylog + organisms[i]->getName() + " killed " + organisms[j]->getName() + "\n";
                     }
                     else if (result == DODGE) {
                         organisms[j]->action(width, height);
-                        //std::cout << *organisms[j] << " dodged attack from " << *organisms[i] << "\n";
                         activitylog = activitylog + organisms[j]->getName() + " dodged attack from " + organisms[i]->getName() + "\n";
                     }
                 }
                 else if (result == DIES) {
                     organisms[i]->die();
-                    //std::cout << *organisms[j] << " killed " << *organisms[i] << "\n";
                     activitylog = activitylog + organisms[j]->getName() + " killed " + organisms[i]->getName() + "\n";
                 }
                 else if (result == BREED) {
@@ -152,7 +150,6 @@ void World::executeTurn() {
                         newOrganism->setAge(0);
                         newOrganism->setY(organisms[i]->getY() - 1);
                         addOrganism(newOrganism);
-                        //std::cout << *newOrganism << " is born\n";
                         activitylog = activitylog + newOrganism->getName() + " is born \n";
                         break;
                     }
@@ -199,4 +196,26 @@ void World::executeTurn() {
     turn++;
 }
 
-//void World::saveFile();
+void World::saveFile() {
+    system("cls");
+    gotoxy(1, 1);
+    std::string filepath = "savefile.txt";
+
+    std::cout << "Filename: ";
+    std::cin >> filepath;
+
+    std::ofstream file(filepath, std::ios::out);
+
+    if (file.is_open()) {
+        file << this->width << ';' << this->height << ';' << this->turn << '\n';
+        for (int i = 0; i < organisms.size(); i++) {
+            file << organisms[i]->getName() << ';';
+            file << organisms[i]->getStrength() << ';' << organisms[i]->getInitiative() << ';';
+            file << organisms[i]->getX() << ';' << organisms[i]->getY() << ';';
+            file << organisms[i]->getAge() << '\n';
+        }
+        file.close();
+        std::cout << "Game saved to " << filepath << '\n';
+        std::cout << "Press SPACE to continue";
+    }
+};

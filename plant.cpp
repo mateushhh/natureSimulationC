@@ -44,8 +44,8 @@ int Plant::action(int width, int height) {
         }
     }
     else {
-        //2% chance of plant spreading to another grid block
-        if (!(rand() % 50)) {
+        //5% chance of plant spreading to another grid block
+        if (!(rand() % 20)) {
             this->setAge(getAge() + 1);
             return BREED;
         }

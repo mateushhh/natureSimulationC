@@ -2,6 +2,7 @@
 #include <vector>
 #include <iostream>
 #include <algorithm>
+#include <fstream>
 #include "conio2.h"
 #include "organism.h"
 

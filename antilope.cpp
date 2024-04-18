@@ -6,7 +6,7 @@ Antilope::Antilope(int x, int y, std::vector<Organism*> otherOrganisms)
 Antilope::~Antilope() {}
 
 Organism* Antilope::clone() {
-    std::cout << this->name << " is born.\n";
+    //std::cout << this->name << " is born.\n";
     return new Antilope(*this);
 }
 

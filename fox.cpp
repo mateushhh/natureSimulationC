@@ -6,7 +6,7 @@ Fox::Fox(int x, int y, std::vector<Organism*> otherOrganisms)
 Fox::~Fox() {}
 
 Organism* Fox::clone() {
-    std::cout << this->name << " is born.\n";
+    //std::cout << this->name << " is born.\n";
     return new Fox(*this);
 }
 

@@ -6,7 +6,7 @@ Wolf::Wolf(int x, int y, std::vector<Organism*> otherOrganisms)
 Wolf::~Wolf() {}
 
 Organism* Wolf::clone() {
-    std::cout << this->name << " is born.\n";
+    //std::cout << this->name << " is born.\n";
     return new Wolf(*this);
 }
 

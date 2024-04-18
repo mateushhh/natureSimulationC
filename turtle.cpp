@@ -6,7 +6,7 @@ Turtle::Turtle(int x, int y, std::vector<Organism*> otherOrganisms)
 Turtle::~Turtle() {}
 
 Organism* Turtle::clone() {
-    std::cout << this->name << " is born.\n";
+    //std::cout << this->name << " is born.\n";
     return new Turtle(*this);
 }
 
