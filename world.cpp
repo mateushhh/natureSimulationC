@@ -199,12 +199,12 @@ void World::executeTurn() {
 void World::saveFile() {
     system("cls");
     gotoxy(1, 1);
-    std::string filepath = "savefile.txt";
+    std::string filename = "savefile.txt";
 
     std::cout << "Filename: ";
-    std::cin >> filepath;
+    std::cin >> filename;
 
-    std::ofstream file(filepath, std::ios::out);
+    std::ofstream file(filename, std::ios::out);
 
     if (file.is_open()) {
         file << this->width << ';' << this->height << ';' << this->turn << '\n';
@@ -215,7 +215,159 @@ void World::saveFile() {
             file << organisms[i]->getAge() << '\n';
         }
         file.close();
-        std::cout << "Game saved to " << filepath << '\n';
+        std::cout << "Game saved to " << filename << '\n';
         std::cout << "Press SPACE to continue";
     }
-};
+}
+
+/*
+width; height; turn
+name; strength; initiative; x; y; age\n
+
+20;25;2
+Fox;3;7;5;17;2
+Fox;3;7;18;4;2
+Wolf;9;5;4;13;2
+Wolf;9;5;13;2;2
+Sheep;4;4;7;6;2
+Sheep;4;4;3;6;2
+Antilope;4;4;15;7;2
+Antilope;4;4;12;7;2
+Human;5;4;1;1;2
+Turtle;2;1;12;21;2
+Turtle;2;1;16;15;2
+Grass;0;0;2;2;2
+Dandelion;0;0;8;10;2
+Guarana;0;0;11;16;2
+Wolfberries;99;0;18;19;2
+Borscht;10;0;20;20;2
+
+*/
+
+
+int World::loadFile(std::string filepath) {
+    std::ifstream file(filepath);
+    if (!file.is_open()) {
+        std::cerr << "Cannot open file." << std::endl;
+        return 0;
+    }
+
+    //std::vector<Organism*> organisms;
+    std::string line;
+
+    std::getline(file, line);
+    std::istringstream iss(line);
+    std::string token;
+    int width, height, turn;
+    std::getline(iss, token, ';');
+    this->width = std::stoi(token);
+    std::getline(iss, token, ';');
+    this->height = std::stoi(token);
+    std::getline(iss, token, ';');
+    this->turn = std::stoi(token);
+
+
+    while (std::getline(file, line)) {
+        std::istringstream iss(line);
+        std::string token;
+        std::string name;
+        int strength, initiative, x, y, age;
+        
+        //Reading organism data from file
+        std::getline(iss, token, ';');
+        name = token;
+        std::getline(iss, token, ';');
+        strength = std::stoi(token);
+        std::getline(iss, token, ';');
+        initiative = std::stoi(token);
+        std::getline(iss, token, ';');
+        x = std::stoi(token);
+        std::getline(iss, token, ';');
+        y = std::stoi(token);
+        std::getline(iss, token, ';');
+        age = std::stoi(token);
+
+
+        Organism* organism = nullptr;
+        if (name == "Antilope") {
+            delete organism;
+            Antilope* organism = new Antilope(x,y, this->organisms);
+            organism->setStrength(strength);
+            organism->setAge(age);
+            this->organisms.push_back(organism);
+        }
+        else if (name == "Fox") {
+            delete organism;
+            Fox* organism = new Fox(x, y, this->organisms);
+            organism->setStrength(strength);
+            organism->setAge(age);
+            this->organisms.push_back(organism);
+        }
+        else if (name == "Human") {
+            delete organism;
+            Human* organism = new Human(x, y, this->organisms);
+            organism->setStrength(strength);
+            organism->setAge(age);
+            this->organisms.push_back(organism);
+        }
+        else if (name == "Sheep") {
+            delete organism;
+            Sheep* organism = new Sheep(x, y, this->organisms);
+            organism->setStrength(strength);
+            organism->setAge(age);
+            this->organisms.push_back(organism);
+        }
+        else if (name == "Turtle") {
+            delete organism;
+            Turtle* organism = new Turtle(x, y, this->organisms);
+            organism->setStrength(strength);
+            organism->setAge(age);
+            this->organisms.push_back(organism);
+        }
+        else if (name == "Wolf") {
+            delete organism;
+            Wolf* organism = new Wolf(x, y, this->organisms);
+            organism->setStrength(strength);
+            organism->setAge(age);
+            this->organisms.push_back(organism);
+        }
+        else if (name == "Borscht") {
+            delete organism;
+            Borscht* organism = new Borscht(x, y, this->organisms);
+            organism->setStrength(strength);
+            organism->setAge(age);
+            this->organisms.push_back(organism);
+        }
+        else if (name == "Dandelion") {
+            delete organism;
+            Dandelion* organism = new Dandelion(x, y, this->organisms);
+            organism->setStrength(strength);
+            organism->setAge(age);
+            this->organisms.push_back(organism);
+        }
+        else if (name == "Grass") {
+            delete organism;
+            Grass* organism = new Grass(x, y, this->organisms);
+            organism->setStrength(strength);
+            organism->setAge(age);
+            this->organisms.push_back(organism);
+        }
+        else if (name == "Guarana") {
+            delete organism;
+            Guarana* organism = new Guarana(x, y, this->organisms);
+            organism->setStrength(strength);
+            organism->setAge(age);
+            this->organisms.push_back(organism);
+        }
+        else if (name == "Wolfberries") {
+            delete organism;
+            Wolfberries* organism = new Wolfberries(x, y, this->organisms);
+            organism->setStrength(strength);
+            organism->setAge(age);
+            this->organisms.push_back(organism);
+        }
+    }
+
+    file.close();
+    return 1;
+}

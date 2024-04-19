@@ -28,11 +28,13 @@ int main() {
         std::cout << "2. Load Game\n";
         std::cout << "3. Quit\n";
 
+        std::string filename;
         char input = getch();
+
         switch (input) {
         case '1':
             int width, height;
-            clrscr();
+            system("cls");
             gotoxy(1, 1);
             std::cout << "Width: ";
             std::cin >> width;
@@ -43,7 +45,12 @@ int main() {
             menu = false;
             break;
         case '2':
-            //load game
+            system("cls");
+            gotoxy(1, 1);
+            std::cout << "Filename: ";
+            std::cin >> filename;
+            world->loadFile(filename);
+            menu = false;
             break;
         case '3':
             return 0;
@@ -52,6 +59,7 @@ int main() {
     char currentMode = ' ';
 
     // Creating organisms and adding them to the world
+    /*
     Wolf* wolf1 = new Wolf(3, 12, world->organisms);
     Wolf* wolf2 = new Wolf(13, 2, world->organisms);
     Sheep* sheep1 = new Sheep(9, 6, world->organisms);
@@ -68,7 +76,7 @@ int main() {
     Wolfberries* wolfberries1 = new Wolfberries(18, 18, world->organisms);
     Borscht* borscht1 = new Borscht(20, 20, world->organisms);
     Human* human = new Human(1, 1, world->organisms);
-
+    /*
     world->addOrganism(wolf1);
     world->addOrganism(wolf2);
     world->addOrganism(sheep1);
@@ -85,6 +93,7 @@ int main() {
     world->addOrganism(wolfberries1);
     world->addOrganism(borscht1);
     world->addOrganism(human);
+    */
 
     // Main game loop
     world->executeTurn();

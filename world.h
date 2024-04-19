@@ -3,8 +3,22 @@
 #include <iostream>
 #include <algorithm>
 #include <fstream>
+#include <sstream>
 #include "conio2.h"
 #include "organism.h"
+
+#include "antilope.h"
+#include "fox.h"
+#include "human.h"
+#include "sheep.h"
+#include "turtle.h"
+#include "wolf.h"
+#include "borscht.h"
+#include "dandelion.h"
+#include "grass.h"
+#include "guarana.h"
+#include "wolfberries.h"
+
 
 class Organism;
 
@@ -28,4 +42,5 @@ public:
     void drawWorld();
     void executeTurn();
     void saveFile();
+    int loadFile(std::string filename);
 };
