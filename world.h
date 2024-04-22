@@ -43,4 +43,5 @@ public:
     void executeTurn();
     void saveFile();
     int loadFile(std::string filename);
+    void fill();
 };

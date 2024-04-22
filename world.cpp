@@ -12,7 +12,8 @@ int isTaken(std::vector<Organism*> organisms, int numberOfOrganisms, int x, int 
     return counter;
 };
 
-World::World(int width, int height) : width(width), height(height) {}
+World::World(int width, int height) 
+    : width(width), height(height) {}
 
 World::~World() {
     for (auto& organism : organisms) {
@@ -220,31 +221,6 @@ void World::saveFile() {
     }
 }
 
-/*
-width; height; turn
-name; strength; initiative; x; y; age\n
-
-20;25;2
-Fox;3;7;5;17;2
-Fox;3;7;18;4;2
-Wolf;9;5;4;13;2
-Wolf;9;5;13;2;2
-Sheep;4;4;7;6;2
-Sheep;4;4;3;6;2
-Antilope;4;4;15;7;2
-Antilope;4;4;12;7;2
-Human;5;4;1;1;2
-Turtle;2;1;12;21;2
-Turtle;2;1;16;15;2
-Grass;0;0;2;2;2
-Dandelion;0;0;8;10;2
-Guarana;0;0;11;16;2
-Wolfberries;99;0;18;19;2
-Borscht;10;0;20;20;2
-
-*/
-
-
 int World::loadFile(std::string filepath) {
     std::ifstream file(filepath);
     if (!file.is_open()) {
@@ -370,4 +346,70 @@ int World::loadFile(std::string filepath) {
 
     file.close();
     return 1;
+}
+
+void World::fill() {
+    int cellsToFill;
+    srand(time(nullptr));
+
+    int x = rand() % width + 1;
+    int y = rand() % height + 1;
+
+    Organism* newOrganism = nullptr;
+
+    cellsToFill = width * height * 0.07;
+    for (int i = 0; i < cellsToFill; ++i) {
+        x = rand() % width + 1;
+        y = rand() % height + 1;
+
+        int randomType = rand() % 5;
+
+        switch (randomType) {
+        case 0:
+            newOrganism = new Antilope(x, y, organisms);
+            break;
+        case 1:
+            newOrganism = new Fox(x, y, organisms);
+            break;
+        case 2:
+            newOrganism = new Sheep(x, y, organisms);
+            break;
+        case 3:
+            newOrganism = new Turtle(x, y, organisms);
+            break;
+        case 4:
+            newOrganism = new Wolf(x, y, organisms);
+            break;
+        }
+
+        this->addOrganism(newOrganism);
+    }
+    cellsToFill = width * height * 0.03;
+    for (int i = 0; i < cellsToFill; ++i) {
+        x = rand() % width + 1;
+        y = rand() % height + 1;
+
+        int randomType = rand() % 5;
+
+        switch (randomType) {
+        case 0:
+            newOrganism = new Borscht(x, y, organisms);
+            break;
+        case 1:
+            newOrganism = new Dandelion(x, y, organisms);
+            break;
+        case 2:
+            newOrganism = new Grass(x, y, organisms);
+            break;
+        case 3:
+            newOrganism = new Guarana(x, y, organisms);
+            break;
+        case 4:
+            newOrganism = new Wolfberries(x, y, organisms);
+            break;
+        }
+        this->addOrganism(newOrganism);
+    }
+    newOrganism = new Human(x, y, organisms);
+    this->addOrganism(newOrganism);
 }
