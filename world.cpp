@@ -123,8 +123,11 @@ void World::executeTurn() {
                 addOrganism(newOrganism);
         }
 
+
         //Checking for collision
         for (int j = 0; j < numberOfOrganisms; j++) {
+            if (!organisms[i]->alive())
+                break;
             if (i != j && organisms[i]->getX() == organisms[j]->getX() && organisms[i]->getY() == organisms[j]->getY()) {
                 result = organisms[i]->collision(organisms[j]);
                 if (result == KILL) {
