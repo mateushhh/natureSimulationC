@@ -100,7 +100,8 @@ void World::executeTurn() {
 
     //Each organism makes their move
     for (int i = 0; i < numberOfOrganisms; i++) {
-        this->drawWorld();
+        if(organisms[i]->getName()=="Human")
+            this->drawWorld();
         if (!organisms[i]->alive())
             break;
         preX = organisms[i]->getX();
